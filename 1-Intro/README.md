@@ -5,10 +5,10 @@ The program is pretty straight foreward: Sorting is done via an inline operator.
 
 ## Compiling:
 
-    $ make prepare # will create the directories
+    $ make prepare # will create the bin and obj directories
     $ make         # will compile and link the sources
 
-In order to compile the program you need `clang++` and a 'C++11' library.
+In order to compile the program you need `clang++` and a `C++11` library.
 
 ## Running:
 
