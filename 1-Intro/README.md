@@ -19,3 +19,9 @@ Will write the sorted database to a file.
     $ make run_unix_style
 
 Will write the sorted database to the standard console.
+
+Or call the program directly.
+
+(From project directory:)
+
+    $ ./bin/employeeSorter sample_input.txt [> sorted_db.txt]
