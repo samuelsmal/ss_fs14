@@ -58,4 +58,4 @@ remove: clean
 
 .PHONEY: run
 run:
-	./bin/$(TARGET) bin/file1.txt bin/file2.txt bin/file3.txt bin/file4.txt bin/file5.txt
+	./bin/$(TARGET) samples/file1.txt samples/file2.txt samples/file3.txt samples/file4.txt samples/file5.txt
