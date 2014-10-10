@@ -1,3 +1,14 @@
+//
+//  upcat
+//
+//  util.cpp
+//
+//  Samuel von Baussnern
+//  S09-914-623
+//  samuel.vonbaussnern@uzh.ch
+//  Systems Software, FS14, UZH Zurich
+//
+
 #include <unistd.h> // getcwd()
 #include <iostream>
 #include <cstring>
@@ -5,8 +16,8 @@
 
 #include "util.h"
 
-namespace upcat_util {
-  std::string createAbsoluteFilePath(const char* relativePath) {
+namespace util {
+  auto createAbsoluteFilePath(const char* relativePath) -> std::string {
 
     char current_working_directory[1024];
     if (getcwd(current_working_directory, sizeof(current_working_directory)) == NULL) {
@@ -22,12 +33,12 @@ namespace upcat_util {
     return std::string(filename);
   }
 
-  bool checkIfFileExists(const std::string& absoluteFilePath) {
+  auto checkIfFileExists(const std::string& absoluteFilePath) -> bool {
     struct stat buffer;
     return (stat (absoluteFilePath.c_str(), &buffer) == 0);
   }
 
-  bool fileToUpper(std::ifstream& src, std::ofstream& dst) {
+  auto fileToUpper(std::ifstream& src, std::ofstream& dst) -> bool {
     src >> std::noskipws;
 
     char c;
@@ -36,5 +47,9 @@ namespace upcat_util {
     }
 
     return src.eof() && dst.good();
+  }
+
+  size_t ceilDivide(size_t lhs, size_t rhs) {
+    return (lhs + rhs - 1) / rhs;
   }
 }
