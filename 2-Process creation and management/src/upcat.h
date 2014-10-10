@@ -35,13 +35,10 @@ struct Upcat {
     // Needed for non dividable number of files and number of processes.
     // If you do not use the ceiling of the division the last file gets left out.
     numberOfFilesPerProcess = util::ceilDivide(absoluteFilePaths.size(), NUMBER_OF_PROCESSES);
-
-    std::cout << "numberofffp " << numberOfFilesPerProcess << std::endl;
   }
 
   void createAndRunProcesses() {
     for (size_t i = 0; i < NUMBER_OF_PROCESSES; ++i) {
-      std::cout << "process " << i << std::endl;
       pid_t pid = fork();
       if (pid == -1) {
         printf("fork error\n");
@@ -56,11 +53,12 @@ struct Upcat {
   }
 
   void childProcess(size_t current_file_offset) {
-    std::cout << "childprocess " << getpid() << std::endl;
-
     std::ofstream file("tmp_file-" + std::to_string(getpid()));
 
-    for (size_t i = 0; (i < numberOfFilesPerProcess) && (current_file_offset + i < absoluteFilePaths.size()); ++i) {
+    for (size_t i = 0;
+      (i < numberOfFilesPerProcess)
+      && (current_file_offset + i < absoluteFilePaths.size());
+      ++i) {
       std::ifstream in(absoluteFilePaths.at(current_file_offset + i));
       util::fileToUpper(in, file);
     }
@@ -72,7 +70,7 @@ struct Upcat {
   void parentProcess() {
     int status;
     pid_t wpid;
-    while ((wpid = wait(&status)) > 0); // TODO: wait on all children, with setpgid?
+    while ((wpid = wait(&status)) > 0); // Whait on all children. // TODO: wait on all children, with setpgid?
 
     if (WIFEXITED(status)) {
       std::cout << "child has terminated normally." << std::endl;
