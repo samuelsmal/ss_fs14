@@ -35,4 +35,4 @@ The main class is `Upcat` (`src/upcat.h`), it does the heavy lifting.
 The `main` function (`src/main.cpp`) is the starting point, constructs a new
 `Upcat` object on the stack, and calls `Upcat.createAndRunProcesses()`, which is
 the entry point for the process creation and management
-(see `Upcat.childProcess()` and `Upcat.parentProcess()`). 
+(see `Upcat.childProcess()` and `Upcat.parentProcess()`).

@@ -29,7 +29,14 @@ struct Upcat {
 
   Upcat(int numberOfPaths, const char* paths[]) {
     for (int i = 1; i < numberOfPaths; ++i) {
-      absoluteFilePaths.push_back(std::string(util::createAbsoluteFilePath(paths[i])));
+      std::string currentAbsoluteFilePath = util::createAbsoluteFilePath(paths[i]);
+
+	    if (!util::checkIfFileExists(currentAbsoluteFilePath)) {
+        std::cerr << "ERROR: File \"" << currentAbsoluteFilePath << "\" does not exist!" << std::endl;
+        std::exit(EXIT_FAILURE);
+      }
+
+      absoluteFilePaths.push_back(currentAbsoluteFilePath);
     }
 
     // Needed for non dividable number of files and number of processes.
