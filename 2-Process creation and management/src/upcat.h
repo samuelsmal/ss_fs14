@@ -45,7 +45,7 @@ struct Upcat {
         std::exit(1);
       } else if (pid == 0) {
         childProcess(i * numberOfFilesPerProcess);
-        std::exit(EXIT_SUCCESS);
+        break;
       } else {
         parentProcess();
       }
@@ -76,7 +76,7 @@ struct Upcat {
       std::cout << "child has terminated normally." << std::endl;
     } else {
       std::cerr << "child has not terminated normally" << std::endl;
-      std::exit(1);
+      std::exit(1); // Something's wrong, so end the programm.
     }
   }
 };
