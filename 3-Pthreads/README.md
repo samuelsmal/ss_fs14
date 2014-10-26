@@ -29,9 +29,6 @@ Will remove the objective-files and the temporary files.
 
 Will in addition to `make clean` will remove the binary.
 
-## Programm overview
+## Program overview
 
-Sorry, no time left... rather confusing. but the code should speak for itself...
-hopefully...
-
-input checking is rather bad. sorry about that.
+Follow the trail from `main.cpp`.
