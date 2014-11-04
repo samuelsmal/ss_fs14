@@ -34,6 +34,9 @@ namespace pat_matching
       return (stat (filePath.c_str(), &buffer) == 0);
     }
 
+    // I know these are really bad...
+    // I should reuse the stream, and pack everything in a templated version.
+    // And there is only one thing we say to Death: “Not today.”
     auto parseFileArgument(const char* file_name) -> std::string {
       std::string ret_val;
       std::istringstream iss(file_name);
