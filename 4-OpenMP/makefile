@@ -9,12 +9,11 @@
 TARGET     = pat_matching
 
 CXX        = clang++
-CFLAGS     = -std=c++11 -Os \
-						 -Weverything -Wall -Wextra -Werror -Wpointer-arith -Wcast-qual \
-						 -Wno-missing-braces -Wempty-body -Wno-error=uninitialized \
-						 -Wno-error=deprecated-declarations -Wno-c++98-compat \
-						 -pedantic-errors -pedantic \
-						 -Os -fopenmp
+CFLAGS     = -std=c++11 -Weverything -Wall -Wextra -Wpointer-arith -Wcast-qual \
+             -Wno-missing-braces -Wempty-body -Wno-error=uninitialized \
+             -Wno-error=deprecated-declarations -Wno-c++98-compat \
+             -pedantic-errors -pedantic \
+             -Os -openmp
 
 
 LINKER     = clang++ -o
