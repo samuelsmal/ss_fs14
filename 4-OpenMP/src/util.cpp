@@ -72,23 +72,51 @@ namespace pat_matching
     //
     //  Project based stuff
     //
-    auto readSamplesFromFile(const std::string file_name) -> std::vector<double> {
-      std::vector<double> samples;
+    auto readSequenceFromFile(const std::string& file_name) -> std::string {
+      std::fstream fs(file_name, std::ios_base::in);
 
-      std::fstream sample_file(file_name, std::ios_base::in);
+      size_t sequence_length;
+      std::string sequence;
 
-      double sample;
-      while (sample_file >> sample) {
-        samples.push_back(sample);
+      if(!((fs >> sequence_length) && (fs >> sequence))) {
+        exitWithErrorMessage("Unkown error in sequence file!");
+      } else if (sequence_length != sequence.length()) {
+        exitWithErrorMessage("Given length and sequence lenght are NOT the same!");
       }
 
-      return std::move(samples);
+      return sequence;
     }
 
-    void writeSamplesToFile(const std::vector<double>& v, std::string file_name) {
+    auto readPatternsFromFile(const std::string& file_name) -> std::vector<std::string> {
+      std::fstream fs(file_name, std::ios_base::in);
+
+      std::vector<std::string> v;
+
+      size_t number_of_patterns;
+
+      fs >> number_of_patterns;
+
+      size_t current_pattern_length;
+      std::string current_pattern;
+      while((fs >> current_pattern_length) && (fs >> current_pattern)) {
+        if (current_pattern_length != current_pattern.length()) {
+          exitWithErrorMessage("Pattern \"" + current_pattern + "\" length is NOT the same as the given pattern length");
+        }
+
+        v.push_back(current_pattern);
+      }
+
+      if (number_of_patterns != v.size()) {
+        exitWithErrorMessage("You lied about the number of patters you'd provide!");
+      }
+
+      return std::move(v);
+    }
+
+    void writeMatchesToFile(const std::vector<std::string>& v, std::string file_name) {
       std::ofstream file(file_name);
 
-      std::ostream_iterator<double> out_itr(file, " ");
+      std::ostream_iterator<std::string> out_itr(file, " ");
       std::copy(v.begin(), v.end(), out_itr);
     }
 

@@ -30,12 +30,11 @@ int main(int argc, const char* argv[])
     pat_matching::util::exitWithUsagePrint();
   }
 
-  istringstream iss;
+  string sequence{readSequenceFromFile(parseFileArgument(argv[1]))};
+  vector<string> patterns{readPatternsFromFile(parseFileArgument(argv[2]))};
 
-  string sequence_file_name = parseFileArgument(argv[1]);
-  string pattern_file_name = parseFileArgument(argv[2]);
-  size_t number_of_threads = parseSizeTArgument(argv[3]);
-  short execution_mode = parseShortArgument(argv[4]);
+  //size_t number_of_threads = parseSizeTArgument(argv[3]);
+  //short execution_mode = parseShortArgument(argv[4]);
 
 
   return 0;

@@ -18,7 +18,8 @@ namespace pat_matching
     //  Project based stuff
     //
 
-    std::vector<double> readSamplesFromFile(const std::string);
-    void writeSamplesToFile(const std::vector<double>&, std::string);
+    std::string readSequenceFromFile(const std::string&);
+    std::vector<std::string> readPatternsFromFile(const std::string&);
+    void writeMatchesToFile(const std::vector<std::string>&, std::string);
   }
 }
