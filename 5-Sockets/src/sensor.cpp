@@ -23,6 +23,9 @@ int create_server_socket();
 int main() {
   int server_socket = create_server_socket();
 
+  // TODO shutdown gracefully
+  // TODO enable mulitiple hosts
+
   struct sockaddr_un addr_client;
   socklen_t addr_client_len;
 
@@ -48,6 +51,14 @@ int main() {
 
   buf[ nr ] = '\0';
   std::cout << buf << std::endl;
+
+  const char correct_auth_token[4] = "TMP";
+
+  if (strncmp(buf, correct_auth_token, 3) == 0) {
+    write( client_socket, "10", 2 );
+  } else {
+    write( client_socket, "ERR", 3 );
+  }
 
 
   // ***   close sockets   ***

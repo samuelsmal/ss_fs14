@@ -6,7 +6,13 @@
 #include <stddef.h>
 
 
-int main() {
+int main(int argc, const char* argv[]) {
+  if (argc != 2) {
+    std::cerr << "Wrong number of arguments"
+      << "\n\t Usage: host <String: auth token>"
+      << std::endl;
+  }
+
 
   struct sockaddr_un addr_s;
   socklen_t addr_s_len;
@@ -27,8 +33,13 @@ int main() {
     return -1;
   }
 
-  char buf[ 4 ] = "MSG"; // the last bit is the termination character \0
-  write( fd_c, buf, 3 ); // the termination character doesn't have to be transmitted
+  write( fd_c, argv[1], strlen(argv[1]) ); // the termination character doesn't have to be transmitted
+
+  char buf[255];
+  size_t nr = read ( fd_c, buf, 255);
+  buf[nr] = '\0';
+
+  std::cout << buf << std::endl;
 
   close( fd_c );
 
