@@ -20,8 +20,7 @@
 
 int create_server_socket();
 
-int main()
-{
+int main() {
   int server_socket = create_server_socket();
 
   struct sockaddr_un addr_client;

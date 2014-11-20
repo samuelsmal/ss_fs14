@@ -6,25 +6,17 @@
 #include <stddef.h>
 
 
-int main()
-{
-  int fd_c;
+int main() {
 
   struct sockaddr_un addr_s;
   socklen_t addr_s_len;
 
-
-  // ***   create socket   ***
-
-  fd_c = socket( AF_UNIX, SOCK_STREAM, 0 );
+  int fd_c = socket( AF_UNIX, SOCK_STREAM, 0 );
   if( fd_c < 0 )
   {
     std::cerr << "Error in socket()" << std::endl;
     return -1;
   }
-
-
-  // ***   establish connection   ***
 
   addr_s.sun_family = AF_UNIX;
   strcpy( addr_s.sun_path, "./sample.socket" );
@@ -35,18 +27,8 @@ int main()
     return -1;
   }
 
-
-  // ***   write message   ***
-
-  char buf[ 3 ];
-
-  buf[ 0 ] = 'M';
-  buf[ 1 ] = 'S';
-  buf[ 2 ] = 'G';
-  write( fd_c, buf, 3 );
-
-
-  // ***   close socket   ***
+  char buf[ 4 ] = "MSG"; // the last bit is the termination character \0
+  write( fd_c, buf, 3 ); // the termination character doesn't have to be transmitted
 
   close( fd_c );
 
