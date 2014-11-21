@@ -10,3 +10,4 @@
 //
 
 static const char SOCKET_NAME[] = "./sample.socket";
+static const char AUTH_TOKEN[] = "TMP";

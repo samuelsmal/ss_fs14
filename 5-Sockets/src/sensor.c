@@ -60,9 +60,7 @@ int main() {
   buf[ nr ] = '\0';
   printf("%s\n", buf);
 
-  const char correct_auth_token[] = "TMP";
-
-  if (strncmp(buf, correct_auth_token, 3) == 0) {
+  if (strncmp(buf, AUTH_TOKEN, 3) == 0) {
     write( client_socket, "10", 2 );
   } else {
     write( client_socket, "ERR", 3 );
