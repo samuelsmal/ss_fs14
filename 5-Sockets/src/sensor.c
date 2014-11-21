@@ -1,5 +1,5 @@
 //
-//  pat_matching
+//  Exercise 5 - Simulating a Remote Temperature Sensor using UNIX-Domain Sockets
 //
 //  sensor.c
 //
@@ -8,8 +8,6 @@
 //  samuel.vonbaussnern@uzh.ch
 //  Systems Software, FS14, UZH Zurich
 //
-//  Exercise 5 - Simulating a Remote Temperature Sensor using UNIX-Domain Sockets
-//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,20 +15,32 @@
 #include <sys/un.h>
 #include <unistd.h>
 #include <stddef.h>
+#include <errno.h>
 
-int create_server_socket(void);
+#include "defaults.h"
+#include "utils.h"
+
+int initserver(int type, const struct sockaddr *addr, socklen_t alen, int qlen);
 
 int main() {
-  int server_socket = create_server_socket();
-
   // TODO shutdown gracefully
   // TODO enable mulitiple hosts
 
   struct sockaddr_un addr_client;
   socklen_t addr_client_len;
 
+  struct sockaddr_un addr_server;
+  addr_server.sun_family = AF_UNIX;
+  strcpy( addr_server.sun_path, SOCKET_NAME );
+  socklen_t addr_server_len = offsetof( struct sockaddr_un, sun_path ) + strlen( addr_server.sun_path );
+
+  int server_socket;
+  if ( ( server_socket = initserver( SOCK_STREAM, ( struct sockaddr* )&addr_server, addr_server_len, 10) ) < 0) {
+    exit(EXIT_FAILURE);
+  }
+
   if( listen( server_socket, 1 ) < 0 ) {
-    printf("%s\n", "Error in listen()");
+    perror("Error in listen()");
     exit(EXIT_FAILURE);
   }
 
@@ -40,7 +50,7 @@ int main() {
   int client_socket = accept( server_socket, ( struct sockaddr* )&addr_client, &addr_client_len );
 
   if( client_socket < 0 ) {
-    printf("%s\n", "Error in accept()");
+    perror("Error in accept()");
     exit(EXIT_FAILURE);
   }
 
@@ -50,7 +60,7 @@ int main() {
   buf[ nr ] = '\0';
   printf("%s\n", buf);
 
-  const char correct_auth_token[4] = "TMP";
+  const char correct_auth_token[] = "TMP";
 
   if (strncmp(buf, correct_auth_token, 3) == 0) {
     write( client_socket, "10", 2 );
@@ -63,27 +73,7 @@ int main() {
   close( client_socket );
   close( server_socket );
 
-  unlink( "./sample.socket" );
+  unlink( SOCKET_NAME );
 
   exit(EXIT_SUCCESS);
-}
-
-int create_server_socket(void) {
-  int server_socket = socket( AF_UNIX, SOCK_STREAM, 0 );
-  if( server_socket < 0 ) {
-    printf("%s\n", "Error in socket()");
-    exit(EXIT_FAILURE);
-  }
-
-  struct sockaddr_un addr_server;
-  addr_server.sun_family = AF_UNIX;
-  strcpy( addr_server.sun_path, "./sample.socket" );
-  socklen_t addr_server_len = offsetof( struct sockaddr_un, sun_path ) + strlen( addr_server.sun_path );
-
-  if( bind( server_socket, ( struct sockaddr* )&addr_server, addr_server_len ) < 0 ) {
-    printf("%s\n", "Error in bind()");
-    exit(EXIT_FAILURE);
-  }
-
-  return server_socket;
 }

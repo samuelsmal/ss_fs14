@@ -1,6 +1,5 @@
 # Requires the following project directory structure:
 #  /bin
-#  /obj
 #  /src
 
 # Use 'make remove' to clean up the hole project
