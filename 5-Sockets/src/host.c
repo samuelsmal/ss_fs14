@@ -20,34 +20,46 @@
 #include "utils.h"
 
 int main(int argc, const char* argv[]) {
-  if (argc != 2) {
-    const char err_msg[] = "Wrong number of arguments";
-    const char usage_msg[] = "Usage: host <String: auth token>";
-    printf("%s\n%s\n", err_msg, usage_msg);
-    exit(EXIT_FAILURE);
-  }
+	if (argc != 2) {
+		const char err_msg[] = "Wrong number of arguments";
+		const char usage_msg[] = "Usage: host <String: socket address>";
+		printf("%s\n%s\n", err_msg, usage_msg);
+		exit(EXIT_FAILURE);
+	}
 
-  struct sockaddr_un addr;
-  socklen_t addr_len;
-  addr.sun_family = AF_UNIX;
-  strcpy( addr.sun_path, SOCKET_NAME );
-  addr_len = sizeof( addr );
+	struct sockaddr_un addr;
+	socklen_t addr_len;
+	addr.sun_family = AF_UNIX;
+	strcpy(addr.sun_path, argv[1]);
+	addr_len = sizeof(addr);
 
-  int fd_c;
-  if ( ( fd_c = connect_retry(AF_UNIX, SOCK_STREAM, 0, ( struct sockaddr* )&addr, addr_len) ) < 0 ) {
-    perror("Couldn't establish a connection.");
-    exit(EXIT_FAILURE);
-  }
+	int fd_c;
+	if ((fd_c = connect_retry(AF_UNIX, SOCK_STREAM, 0, (struct sockaddr*) &addr,
+			addr_len)) < 0) {
+		perror("Couldn't establish a connection.");
+		exit(EXIT_FAILURE);
+	}
 
-  write( fd_c, argv[1], strlen(argv[1]) ); // the termination character doesn't have to be transmitted
+	printf("Please write token to send: ");
 
-  char buf[255];
-  ssize_t nr = read ( fd_c, buf, 255);
-  buf[nr] = '\0';
+	const char *input;
+	size_t size = 1024;
+	input = malloc(size);
+	getline(&input, &size, stdin);
 
-  printf("%s\n", buf);
+	write(fd_c, argv[1], strlen(argv[1])); // the termination character doesn't have to be transmitted
 
-  close( fd_c );
+	char buf[255];
+	ssize_t nr = read(fd_c, buf, 255);
+	buf[nr] = '\0';
 
-  exit(EXIT_SUCCESS);
+	printf("Received: %s\n", buf);
+
+	close(fd_c);
+
+	const char end_msg[] = "Press RETURN to exit!";
+	printf("%s\n", end_msg);
+	getchar();
+
+	exit(EXIT_SUCCESS);
 }
