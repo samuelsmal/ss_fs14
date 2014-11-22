@@ -20,9 +20,9 @@
 #include "utils.h"
 
 int main(int argc, const char* argv[]) {
-	if (argc != 2) {
+	if (argc != 3) {
 		const char err_msg[] = "Wrong number of arguments";
-		const char usage_msg[] = "Usage: host <String: socket address>";
+		const char usage_msg[] = "Usage: host <String: socket address> <String: auth token>";
 		printf("%s\n%s\n", err_msg, usage_msg);
 		exit(EXIT_FAILURE);
 	}
@@ -40,14 +40,7 @@ int main(int argc, const char* argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	printf("Please write token to send: ");
-
-	const char *input;
-	size_t size = 1024;
-	input = malloc(size);
-	getline(&input, &size, stdin);
-
-	write(fd_c, argv[1], strlen(argv[1])); // the termination character doesn't have to be transmitted
+	write(fd_c, argv[2], strlen(argv[2])); // the termination character doesn't have to be transmitted
 
 	char buf[255];
 	ssize_t nr = read(fd_c, buf, 255);
