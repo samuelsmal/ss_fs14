@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <stddef.h>
 #include <errno.h>
+#include <signal.h>
 
 #include "defaults.h"
 #include "utils.h"

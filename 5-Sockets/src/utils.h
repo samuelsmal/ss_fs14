@@ -10,13 +10,14 @@
 //
 #include <errno.h>
 #include <sys/socket.h>
+#include <signal.h>
 
 #define MAXSLEEP 128
 
 int initserver(int type, const struct sockaddr *addr, socklen_t alen, int qlen);
 int connect_retry(int domain, int type, int protocol,
 		const struct sockaddr *addr, socklen_t alen);
-void signalHandler(int signum);
+void signalHandler(int signum) __attribute__ ((noreturn));
 
 int initserver(int type, const struct sockaddr *addr, socklen_t alen,
 		int qlen) {
