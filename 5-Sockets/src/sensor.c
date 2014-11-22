@@ -3,9 +3,6 @@
 //
 //  sensor.c
 //
-//  Samuel von Baussnern
-//  S09-914-623
-//  samuel.vonbaussnern@uzh.ch
 //  Systems Software, FS14, UZH Zurich
 //
 

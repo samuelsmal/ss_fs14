@@ -3,10 +3,8 @@
 //
 //  utils.h
 //
-//  Samuel von Baussnern
-//  S09-914-623
-//  samuel.vonbaussnern@uzh.ch
 //  Systems Software, FS14, UZH Zurich
+//
 //
 #include <errno.h>
 #include <sys/socket.h>
