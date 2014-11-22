@@ -22,6 +22,10 @@
 #include "utils.h"
 
 int initserver(int type, const struct sockaddr *addr, socklen_t alen, int qlen);
+void signalHandler(int signum) __attribute__ ((noreturn));
+
+static const char *SOCKET_ADDRESS;
+static int SERVER_SOCKET;
 
 int main(int argc, const char* argv[]) {
 	if (argc != 2) {
@@ -30,6 +34,8 @@ int main(int argc, const char* argv[]) {
 		printf("%s\n%s\n", err_msg, usage_msg);
 		exit(EXIT_FAILURE);
 	}
+
+  SOCKET_ADDRESS = argv[1];
 
 	struct sigaction sigIntHandler;
 	sigIntHandler.sa_handler = signalHandler;
@@ -42,20 +48,19 @@ int main(int argc, const char* argv[]) {
 
 	struct sockaddr_un addr_server;
 	addr_server.sun_family = AF_UNIX;
-	strcpy(addr_server.sun_path, argv[1]);
+	strcpy(addr_server.sun_path, SOCKET_ADDRESS);
 	socklen_t
 	addr_server_len = offsetof( struct sockaddr_un, sun_path ) + strlen( addr_server.sun_path );
 
-	int server_socket;
-	if ((server_socket = initserver(SOCK_STREAM,
+  unlink(argv[1]);
+
+	if ((SERVER_SOCKET = initserver(SOCK_STREAM,
 			(struct sockaddr*) &addr_server, addr_server_len, 10)) < 0) {
 		exit(EXIT_FAILURE);
 	}
 
-	int bool = 1;
-
-	while (bool == 1) {
-		if (listen(server_socket, 1) < 0) {
+	while (1) {
+		if (listen(SERVER_SOCKET, 1) < 0) {
 			perror("Error in listen()");
 			exit(EXIT_FAILURE);
 		}
@@ -63,7 +68,7 @@ int main(int argc, const char* argv[]) {
 		// ***   accept an incoming connection   ***
 
 		addr_client_len = sizeof(struct sockaddr_un);
-		int client_socket = accept(server_socket,
+		int client_socket = accept(SERVER_SOCKET,
 				(struct sockaddr*) &addr_client, &addr_client_len);
 
 		if (client_socket < 0) {
@@ -110,15 +115,13 @@ int main(int argc, const char* argv[]) {
 			signal(SIGCHLD, SIG_IGN);
 		}
 	}
+  exit(EXIT_SUCCESS);
+}
 
-	close(server_socket);
-
-	unlink(argv[1]);
-
-	const char end_msg[] = "Press RETURN to exit!";
-	printf("%s\n", end_msg);
-
-	getchar();
-
-	exit(EXIT_SUCCESS);
+void signalHandler(int signum) {
+  printf("\nInterrupt signal received...\nProgram terminating...\n");
+  close(SERVER_SOCKET);
+  unlink(SOCKET_ADDRESS);
+  printf("%s\n", "Done.");
+  exit(signum);
 }

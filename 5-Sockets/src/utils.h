@@ -17,7 +17,6 @@
 int initserver(int type, const struct sockaddr *addr, socklen_t alen, int qlen);
 int connect_retry(int domain, int type, int protocol,
 		const struct sockaddr *addr, socklen_t alen);
-void signalHandler(int signum) __attribute__ ((noreturn));
 
 int initserver(int type, const struct sockaddr *addr, socklen_t alen,
 		int qlen) {
@@ -40,7 +39,8 @@ int initserver(int type, const struct sockaddr *addr, socklen_t alen,
 
 	return (fd);
 
-	ERROUT_INITSERVER: err = errno;
+ERROUT_INITSERVER:
+  err = errno;
 	close(fd);
 	errno = err;
 	return (-1);
@@ -81,15 +81,4 @@ int connect_retry(int domain, int type, int protocol,
 	}
 
 	return (-1);
-}
-
-void signalHandler(int signum) {
-	printf("Interrupt signal; Program terminated.\n");
-
-	const char end_msg[] = "Press RETURN to exit!";
-	printf("%s\n", end_msg);
-
-	getchar();
-
-	exit(signum);
 }
