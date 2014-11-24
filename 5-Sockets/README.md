@@ -10,8 +10,8 @@ default in `GNU C11` mode.
 
 1. Open n terminals.
 2.
-   1. In the first write: `./bin/sensor`.
-   1. In rest write: `./bin/host <auth token>`.
+   1. In the first write: `./bin/sensor <socket address>`.
+   1. In rest write: `./bin/host <socket address> <auth token>`.
       The `auth token` can be any three letter combination. But only `TMP` will grant you access.
 3. Terminate the sensor (and the program) by hitting `CTRL-C` in the sensor terminal.
 
