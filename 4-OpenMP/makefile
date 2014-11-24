@@ -8,16 +8,16 @@
 # Name of target file
 TARGET     = pat_matching
 
-CXX        = clang++
-CFLAGS     = -std=c++11 -Weverything -Wall -Wextra -Wpointer-arith -Wcast-qual \
+CXX        = g++
+CFLAGS     = -std=c++11 -Wall -Wextra -Wpointer-arith -Wcast-qual \
              -Wno-missing-braces -Wempty-body -Wno-error=uninitialized \
              -Wno-error=deprecated-declarations -Wno-c++98-compat \
              -pedantic-errors -pedantic \
-             -Os -openmp
+             -Os -fopenmp
 
 
-LINKER     = clang++ -o
-LFLAGS     = -lgomp
+LINKER     = g++ -o
+LFLAGS     = -fopenmp
 
 SRCDIR     = src
 OBJDIR     = obj
@@ -55,6 +55,6 @@ remove: clean
 
 .PHONEY: run
 run:
-	./bin/$(TARGET) sequence.txt patterns.txt 4 2
-	./bin/$(TARGET) sequence.txt patterns.txt 3 1
-	./bin/$(TARGET) sequence.txt patterns.txt 4 0
+	./bin/$(TARGET) test_sequence.txt test_patterns.txt 4 2
+	./bin/$(TARGET) test_sequence.txt test_patterns.txt 3 1
+	./bin/$(TARGET) test_sequence.txt test_patterns.txt 4 0

@@ -46,10 +46,10 @@ int main(int argc, const char* argv[])
 
   double time_start = omp_get_wtime();
 
-#pragma omp parallel for num_threads(num_of_threads) if(is_in_pattern_split_mode) schedule(guided, chunk_size)
+#pragma omp parallel for num_threads(number_of_threads) if(is_in_pattern_split_mode) schedule(guided)
   for (size_t pats_index = 0; pats_index < patterns.size(); ++pats_index) {
     string pat = patterns.at(pats_index);
-#pragma omp parallel for num_threads(num_of_threads) if(is_in_sequence_split_mode) schedule(guided, chunk_size)
+#pragma omp parallel for num_threads(number_of_threads) if(is_in_sequence_split_mode) schedule(guided)
     for (size_t s = 0; s < sequence.length(); ++s) {
       for (size_t c_s = s, pattern_index = 0; (c_s < sequence.length()) && (pattern_index < pat.length()); ++c_s, ++pattern_index) {
         if (sequence.at(c_s) != pat.at(pattern_index)) {
@@ -69,13 +69,7 @@ int main(int argc, const char* argv[])
   double time_end = omp_get_wtime();
   cout << "It took " << (time_end - time_start) << " seconds" << endl;
 
-  for (const auto &occ : occurrences) {
-    for (const auto &match : occ.second) {
-      cout << "(" << occ.first << ", " << match << ") " << endl;
-    }
-  }
-
-  cout << endl;
+  writeMatchesToFile(occurrences, "occurrences.txt");
 
   return 0;
 }

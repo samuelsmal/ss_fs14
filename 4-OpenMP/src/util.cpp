@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <fstream>
 #include <sstream>
+#include <map>
 
 #include "util.h"
 
@@ -11,8 +12,10 @@ namespace pat_matching
 {
   namespace util
   {
+    using namespace std;
+
     [[ noreturn ]] void exitWithUsagePrint() {
-        std::cout << "Usage: "
+        cout << "Usage: "
           "pat_matching "
           "<string: sequence file name> "
           "<string: pattern file name> "
@@ -20,16 +23,16 @@ namespace pat_matching
           "<short: mode (0: serial, 1: parallel v1, 2: parallel v2)>"
           "\n\n\tNOTE: This program uses \'size_t\'! "
           "Entering a negative value for number-of-threads "
-          "WILL result in unwanted behaviour!" << std::endl;
-        std::exit(EXIT_FAILURE);
+          "WILL result in unwanted behaviour!" << endl;
+        exit(EXIT_FAILURE);
     }
 
-    [[ noreturn ]] void exitWithErrorMessage(const std::string message) {
-      std::cerr << message << std::endl;
-      std::exit(EXIT_FAILURE);
+    [[ noreturn ]] void exitWithErrorMessage(const string message) {
+      cerr << message << endl;
+      exit(EXIT_FAILURE);
     }
 
-    auto fileExists(const std::string& filePath) -> bool {
+    auto fileExists(const string& filePath) -> bool {
       struct stat buffer;
       return (stat (filePath.c_str(), &buffer) == 0);
     }
@@ -37,9 +40,9 @@ namespace pat_matching
     // I know these are really bad...
     // I should reuse the stream, and pack everything in a templated version.
     // And there is only one thing we say to Death: “Not today.”
-    auto parseFileArgument(const char* file_name) -> std::string {
-      std::string ret_val;
-      std::istringstream iss(file_name);
+    auto parseFileArgument(const char* file_name) -> string {
+      string ret_val;
+      istringstream iss(file_name);
       if(!(iss >> ret_val)) {
         exitWithUsagePrint();
       } else if (!fileExists(ret_val)) {
@@ -51,7 +54,7 @@ namespace pat_matching
 
     auto parseSizeTArgument(const char* unsigned_number) -> size_t {
       size_t ret_val;
-      std::istringstream iss(unsigned_number);
+      istringstream iss(unsigned_number);
       if(!(iss >> ret_val)) {
         exitWithUsagePrint();
       }
@@ -61,7 +64,7 @@ namespace pat_matching
 
     auto parseShortArgument(const char* short_number) -> short {
       short ret_val;
-      std::istringstream iss(short_number);
+      istringstream iss(short_number);
       if(!(iss >> ret_val)) {
         exitWithUsagePrint();
       }
@@ -72,11 +75,11 @@ namespace pat_matching
     //
     //  Project based stuff
     //
-    auto readSequenceFromFile(const std::string& file_name) -> std::string {
-      std::fstream fs(file_name, std::ios_base::in);
+    auto readSequenceFromFile(const string& file_name) -> string {
+      fstream fs(file_name, ios_base::in);
 
       size_t sequence_length;
-      std::string sequence;
+      string sequence;
 
       if(!((fs >> sequence_length) && (fs >> sequence))) {
         exitWithErrorMessage("Unkown error in sequence file!");
@@ -87,17 +90,17 @@ namespace pat_matching
       return sequence;
     }
 
-    auto readPatternsFromFile(const std::string& file_name) -> std::vector<std::string> {
-      std::fstream fs(file_name, std::ios_base::in);
+    auto readPatternsFromFile(const string& file_name) -> vector<string> {
+      fstream fs(file_name, ios_base::in);
 
-      std::vector<std::string> v;
+      vector<string> v;
 
       size_t number_of_patterns;
 
       fs >> number_of_patterns;
 
       size_t current_pattern_length;
-      std::string current_pattern;
+      string current_pattern;
       while((fs >> current_pattern_length) && (fs >> current_pattern)) {
         if (current_pattern_length != current_pattern.length()) {
           exitWithErrorMessage("Pattern \"" + current_pattern + "\" length is NOT the same as the given pattern length");
@@ -110,14 +113,17 @@ namespace pat_matching
         exitWithErrorMessage("You lied about the number of patters you'd provide!");
       }
 
-      return std::move(v);
+      return move(v);
     }
 
-    void writeMatchesToFile(const std::vector<std::string>& v, std::string file_name) {
-      std::ofstream file(file_name);
+    void writeMatchesToFile(const map<size_t, vector<size_t>>& occurrences, string file_name) {
+      ofstream file(file_name);
 
-      std::ostream_iterator<std::string> out_itr(file, " ");
-      std::copy(v.begin(), v.end(), out_itr);
+      for (const auto &occ : occurrences) {
+        for (const auto &match : occ.second) {
+          file << "(" << occ.first << ", " << match << ") " << endl;
+        }
+      }
     }
 
   }

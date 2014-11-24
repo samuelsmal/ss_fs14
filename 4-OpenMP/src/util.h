@@ -20,6 +20,6 @@ namespace pat_matching
 
     std::string readSequenceFromFile(const std::string&);
     std::vector<std::string> readPatternsFromFile(const std::string&);
-    void writeMatchesToFile(const std::vector<std::string>&, std::string);
+    void writeMatchesToFile(const std::map<size_t, std::vector<size_t>>&, std::string);
   }
 }
