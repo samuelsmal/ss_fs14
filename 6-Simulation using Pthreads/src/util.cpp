@@ -12,6 +12,7 @@
 #include <sstream> // To parse the arguments
 
 #include "util.h"
+#include "settings.h"
 
 namespace kitchen_simulation
 {
@@ -28,29 +29,17 @@ namespace kitchen_simulation
       std::exit(EXIT_FAILURE);
     }
 
-    auto parseOption(const char* argv[], size_t pos) -> size_t {
+    auto parseSetting(const char* argv[], size_t pos) -> size_t {
       std::istringstream iss;
 
-      size_t option;
+      size_t setting;
 
       iss.str(argv[arg_counter++]);
-      if (!(iss >> option)) {
+      if (!(iss >> setting)) {
         exitWithUsagePrint();
       }
 
-      return option;
-    }
-
-    auto parseOptions(const char* argv[]) -> const std::map<std::string, const size_t> {
-      return std::map<std::string, const size_t> {
-        {"number_of_first_type_cooks",   parseOption(argv, 1)},
-        {"number_of_seconds_type_cooks", parseOption(argv, 2)},
-        {"min_waiting_time",             parseOption(argv, 3)},
-        {"max_waiting_time",             parseOption(argv, 4)},
-        {"number_of_spoons",             parseOption(argv, 5)},
-        {"number_of_pans",               parseOption(argv, 6)},
-        {"number_of_lides",              parseOption(argv, 7)}
-      };
+      return setting;
     }
   }
 }
