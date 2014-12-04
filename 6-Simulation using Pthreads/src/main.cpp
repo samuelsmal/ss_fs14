@@ -10,9 +10,11 @@
 
 #include <pthread.h>
 #include <iostream>
+#include <map> // Options
 
 #include "util.h"
 
+using namespace std;
 using namespace kitchen_simulation::util;
 
 pthread_mutex_t SPOONS_LOCK = PTHREAD_MUTEX_INITIALIZER;
@@ -27,13 +29,11 @@ void* handleCook2(void *);
 
 int main(int argc, const char* argv[]) {
 
-  if (argc < 3) {
+  if (argc < 6) {
     exitWithUsagePrint();
   }
 
-  uint number_of_spoons;
-  uint number_of_pans;
-  uint number_of_lides;
+  const map<string, const size_t> options = parseOptions(argv);
 
   // 2 dishes
   // for each dish ONE cook
