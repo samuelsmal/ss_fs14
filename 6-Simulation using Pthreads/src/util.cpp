@@ -34,7 +34,7 @@ namespace kitchen_simulation
 
       size_t setting;
 
-      iss.str(argv[arg_counter++]);
+      iss.str(argv[pos]);
       if (!(iss >> setting)) {
         exitWithUsagePrint();
       }
