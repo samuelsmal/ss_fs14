@@ -12,41 +12,54 @@
 #define _KITCHEN_SIMULATION_THREAD_ARGUMENTS_H_
 
 #include <pthread.h>
-#include <map> // Options
 #include <chrono>
 #include <random>
+
+#include "settings.h"
 
 namespace kitchen_simulation
 {
   namespace thread
   {
     class ThreadArguments {
+     public:
       bool is_simulation_running {true};
 
       pthread_mutex_t tools_lock;
+      pthread_mutex_t log_lock;
 
       size_t number_of_spoons_available;
       size_t number_of_pans_available;
       size_t number_of_lids_available;
 
-      std::mt19937_64 eng{std::random_device{}()};  // or seed however you want
-      std::uniform_int_distribution<> dist;
+      std::mt19937_64 pseudo_random_device{std::random_device{}()};  // or seed however you want
+      std::uniform_int_distribution<size_t> dist;
 
       ThreadArguments(const Settings& settings) {
         number_of_spoons_available = settings.number_of_spoons;
-        number_of_pans_available   = settings.number_of_pans_available;
+        number_of_pans_available   = settings.number_of_pans;
         number_of_lids_available   = settings.number_of_lides;
 
         if (pthread_mutex_init(&tools_lock, NULL) != 0) {
-          exitWithErrorMessage("Couldn't init tools lock.");
+          util::exitWithErrorMessage("Couldn't init tools lock.");
         }
 
-        dist = {options.find("min_waiting_time"),
-                options.find("max_waiting_time")};
+        if (pthread_mutex_init(&log_lock, NULL) != 0) {
+          util::exitWithErrorMessage("Couldn't init log lock.");
+        }
+
+        dist = std::uniform_int_distribution<size_t>{settings.min_waiting_time, settings.max_waiting_time};
       }
 
-      size_t nextRand() {
-        return dist(eng);
+      const struct timespec nextDelay() {
+        size_t nextRandom = dist(pseudo_random_device);
+
+        struct timespec ts;
+
+        ts.tv_sec = nextRandom / 1000;
+        ts.tv_nsec = static_cast<long>(nextRandom - (ts.tv_sec * 1000)) * 1000000;
+
+        return ts;
       }
     };
   }
