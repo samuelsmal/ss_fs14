@@ -8,6 +8,9 @@
 //  Exercise 6 - Simulating the Activity of a Restaurant Kitchen using Posix Threads
 //
 
+#ifndef _KITCHEN_SIMULATION_SETTINGS_H_
+#define _KITCHEN_SIMULATION_SETTINGS_H_
+
 #include <iostream>
 #include <sstream> // To parse the arguments
 
@@ -16,6 +19,7 @@
 namespace kitchen_simulation
 {
   class Settings {
+   public:
     size_t number_of_first_type_cooks;
     size_t number_of_seconds_type_cooks;
     size_t min_waiting_time;
@@ -34,3 +38,5 @@ namespace kitchen_simulation
       number_of_lides(util::parseSetting(argv, 7)) {}
   };
 }
+
+#endif
