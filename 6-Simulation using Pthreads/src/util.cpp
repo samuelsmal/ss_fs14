@@ -28,51 +28,28 @@ namespace kitchen_simulation
       std::exit(EXIT_FAILURE);
     }
 
-    auto parseOptions(const char* argv[]) -> const std::map<std::string, const size_t> {
+    auto parseOption(const char* argv[], size_t pos) -> size_t {
       std::istringstream iss;
 
-      size_t min_waiting_time;
-      size_t max_waiting_time;
+      size_t option;
 
-      size_t number_of_spoons;
-      size_t number_of_pans;
-      size_t number_of_lides;
-
-      iss.str(argv[1]);
-      if (!(iss >> min_waiting_time)) {
+      iss.str(argv[arg_counter++]);
+      if (!(iss >> option)) {
         exitWithUsagePrint();
       }
 
-      iss.clear();
-      iss.str(argv[2]);
-      if (!(iss >> max_waiting_time)) {
-        exitWithUsagePrint();
-      }
+      return option;
+    }
 
-      iss.clear();
-      iss.str(argv[3]);
-      if (!(iss >> number_of_spoons)) {
-        exitWithUsagePrint();
-      }
-
-      iss.clear();
-      iss.str(argv[4]);
-      if (!(iss >> number_of_pans)) {
-        exitWithUsagePrint();
-      }
-
-      iss.clear();
-      iss.str(argv[5]);
-      if (!(iss >> number_of_lides)) {
-        exitWithUsagePrint();
-      }
-
+    auto parseOptions(const char* argv[]) -> const std::map<std::string, const size_t> {
       return std::map<std::string, const size_t> {
-        {"min_waiting_time", min_waiting_time},
-        {"max_waiting_time", max_waiting_time},
-        {"number_of_spoons", number_of_spoons},
-        {"number_of_pans", number_of_pans},
-        {"number_of_lides", number_of_lides}
+        {"number_of_first_type_cooks",   parseOption(argv, 1)},
+        {"number_of_seconds_type_cooks", parseOption(argv, 2)},
+        {"min_waiting_time",             parseOption(argv, 3)},
+        {"max_waiting_time",             parseOption(argv, 4)},
+        {"number_of_spoons",             parseOption(argv, 5)},
+        {"number_of_pans",               parseOption(argv, 6)},
+        {"number_of_lides",              parseOption(argv, 7)}
       };
     }
   }
