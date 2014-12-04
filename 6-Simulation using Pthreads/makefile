@@ -51,4 +51,4 @@ remove: clean
 
 .PHONEY: run
 run:
-	./bin/$(TARGET) 100 1000 1 3 2
+	./bin/$(TARGET) 10 12 100 1000 5 3 20
