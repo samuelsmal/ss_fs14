@@ -9,7 +9,13 @@
 TARGET     = kitchen_simulation
 
 CXX        = clang++
-CFLAGS     = -std=c++11 -Os -pthread
+CFLAGS     = -std=c++11 \
+             -Weverything -Wall -Wextra -Werror -Wpointer-arith -Wcast-qual \
+             -Wno-missing-braces -Wempty-body -Wno-error=uninitialized \
+             -Wno-error=deprecated-declarations -Wno-c++98-compat \
+             -Wno-padded \
+             -pedantic-errors -pedantic \
+             -Os -pthread
 
 
 LINKER     = clang++ -o

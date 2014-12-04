@@ -15,6 +15,7 @@
 #include <pthread.h>
 #include <time.h>
 
+#include "threads.h"
 #include "thread_arguments.h"
 
 namespace kitchen_simulation

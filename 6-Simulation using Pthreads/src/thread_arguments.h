@@ -23,8 +23,6 @@ namespace kitchen_simulation
   {
     class ThreadArguments {
      public:
-      bool is_simulation_running {true};
-
       pthread_mutex_t tools_lock;
       pthread_mutex_t log_lock;
 
@@ -34,6 +32,8 @@ namespace kitchen_simulation
 
       std::mt19937_64 pseudo_random_device{std::random_device{}()};  // or seed however you want
       std::uniform_int_distribution<size_t> dist;
+
+      bool is_simulation_running {true};
 
       ThreadArguments(const Settings& settings) {
         number_of_spoons_available = settings.number_of_spoons;
@@ -57,7 +57,7 @@ namespace kitchen_simulation
         struct timespec ts;
 
         ts.tv_sec = nextRandom / 1000;
-        ts.tv_nsec = static_cast<long>(nextRandom - (ts.tv_sec * 1000)) * 1000000;
+        ts.tv_nsec = static_cast<long>(nextRandom - static_cast<unsigned long>(ts.tv_sec * 1000)) * 1000000;
 
         return ts;
       }
