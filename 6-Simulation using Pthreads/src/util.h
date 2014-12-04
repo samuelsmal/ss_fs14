@@ -19,6 +19,7 @@ namespace kitchen_simulation
   {
     [[ noreturn ]] void exitWithUsagePrint();
     [[ noreturn ]] void exitWithErrorMessage(const std::string);
+
     const std::map<std::string, const size_t> parseOptions(const char* argv[]);
   }
 }
