@@ -38,7 +38,7 @@ namespace kitchen_simulation
       ThreadArguments(const Settings& settings) {
         number_of_spoons_available = settings.number_of_spoons;
         number_of_pans_available   = settings.number_of_pans;
-        number_of_lids_available   = settings.number_of_lides;
+        number_of_lids_available   = settings.number_of_lids;
 
         if (pthread_mutex_init(&tools_lock, NULL) != 0) {
           util::exitWithErrorMessage("Couldn't init tools lock.");
