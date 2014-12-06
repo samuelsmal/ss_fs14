@@ -77,7 +77,7 @@ namespace kitchen_simulation
         pthread_mutex_lock(&(arguments->tools_lock));
         if (arguments->number_of_pans_available > 0
           && arguments->number_of_spoons_available > 0
-          && arguments->number_of_lids_available) {
+          && arguments->number_of_lids_available > 0) {
           cooking = true;
           --(arguments->number_of_spoons_available);
           --(arguments->number_of_pans_available);
@@ -92,6 +92,7 @@ namespace kitchen_simulation
           pthread_mutex_lock(&(arguments->tools_lock));
           ++(arguments->number_of_pans_available);
           ++(arguments->number_of_spoons_available);
+          ++(arguments->number_of_lids_available);
           pthread_mutex_unlock(&(arguments->tools_lock));
 
           pthread_mutex_lock(&(arguments->log_lock));
