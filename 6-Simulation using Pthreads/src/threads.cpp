@@ -43,6 +43,7 @@ namespace kitchen_simulation
           nanosleep(&ts, NULL); // cooking
 
           pthread_mutex_lock(&(arguments->tools_lock));
+          cooking = false;
           ++(arguments->number_of_pans_available);
           ++(arguments->number_of_spoons_available);
 
@@ -90,10 +91,10 @@ namespace kitchen_simulation
           nanosleep(&ts, NULL); // cooking
 
           pthread_mutex_lock(&(arguments->tools_lock));
+          cooking = false;
           ++(arguments->number_of_pans_available);
           ++(arguments->number_of_spoons_available);
           ++(arguments->number_of_lids_available);
-          pthread_mutex_unlock(&(arguments->tools_lock));
 
           pthread_mutex_lock(&(arguments->log_lock));
           std::cout << "A cook of the second type has finished cooking!" << std::endl;
