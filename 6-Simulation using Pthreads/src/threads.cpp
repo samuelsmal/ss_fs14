@@ -122,10 +122,16 @@ namespace kitchen_simulation
 
       // TODO: This has to be adapted.
       char user_input;
-      std::cout << "Press any button any time to stop the simulation" << std::endl;
-      std::cin >> user_input;
-      arguments->is_simulation_running = false;
-      return static_cast<void*>(0);
+      while(true) {
+    	  std::cout << "Press 'q' then 'Enter' any time to stop the simulation" << std::endl;
+      	  std::cin >> user_input;
+      	  if(user_input == 'q') {
+      		  arguments->is_simulation_running = false;
+      		  return static_cast<void*>(0);
+      	  }
+      }
+
+      return 0;
     }
 
     auto createThreads(ThreadArguments& threadArguments, const Settings& settings) -> std::vector<pthread_t> {
@@ -159,7 +165,7 @@ namespace kitchen_simulation
       //
       for (size_t i = 0, e = settings.number_of_seconds_type_cooks; i < e; ++i) {
         pthread_t tid;
-        err = pthread_create(&tid, NULL, cookDish1, static_cast<void*>(&threadArguments));
+        err = pthread_create(&tid, NULL, cookDish2, static_cast<void*>(&threadArguments));
         if (err != 0) {
           util::exitWithErrorMessage("can't create thread 1");
         }
