@@ -3,7 +3,7 @@
 #  /obj
 #  /src
 
-# Use 'make remove' to clean up the hole project
+# Use 'make remove' to clean up the whole project
 
 # Name of target file
 TARGET     = kitchen_simulation
