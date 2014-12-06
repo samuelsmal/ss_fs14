@@ -26,7 +26,7 @@ namespace kitchen_simulation
     size_t max_waiting_time;
     size_t number_of_spoons;
     size_t number_of_pans;
-    size_t number_of_lides;
+    size_t number_of_lids;
 
     Settings(const char* argv[]) :
       number_of_first_type_cooks(util::parseSetting(argv, 1)),
@@ -35,7 +35,7 @@ namespace kitchen_simulation
       max_waiting_time(util::parseSetting(argv, 4)),
       number_of_spoons(util::parseSetting(argv, 5)),
       number_of_pans(util::parseSetting(argv, 6)),
-      number_of_lides(util::parseSetting(argv, 7)) {}
+      number_of_lids(util::parseSetting(argv, 7)) {}
   };
 }
 

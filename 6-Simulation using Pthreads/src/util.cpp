@@ -19,7 +19,7 @@ namespace kitchen_simulation
   namespace util
   {
     [[ noreturn ]] void exitWithUsagePrint() {
-        std::cout << "Usage: kitchen_simulation <sleeping time min (nanoseconds)>, <sleeping time max (nanoseconds)>, <number of spoons>, <number of pans>, <number of lides>\n"
+        std::cout << "Usage: kitchen_simulation <number of cooks1> <number of cooks2> <sleeping time min (nanoseconds)>, <sleeping time max (nanoseconds)>, <number of spoons>, <number of pans>, <number of lids>\n"
           << "\nPress \"q\" to stop the simulation";
         std::exit(EXIT_FAILURE);
     }
