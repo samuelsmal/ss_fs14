@@ -8,6 +8,11 @@
 //  Exercise 6 - Simulating the Activity of a Restaurant Kitchen using Posix Threads
 //
 
+#include <sys/stat.h>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <map>
 #include <iostream>
 #include <sstream> // To parse the arguments
 
