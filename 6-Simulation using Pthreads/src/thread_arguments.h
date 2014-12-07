@@ -24,7 +24,7 @@ namespace kitchen_simulation
     class ThreadArguments {
      public:
       pthread_mutex_t tools_lock;
-      pthread_mutex_t log_lock;
+      pthread_mutex_t out_lock;
 
       size_t number_of_spoons_available;
       size_t number_of_pans_available;
@@ -35,6 +35,10 @@ namespace kitchen_simulation
 
       bool is_simulation_running {true};
 
+      pthread_mutex_t log_lock;
+      size_t number_of_first_type_meals_cooked {0};
+      size_t number_of_second_type_meals_cooked {0};
+
       ThreadArguments(const Settings& settings) {
         number_of_spoons_available = settings.number_of_spoons;
         number_of_pans_available   = settings.number_of_pans;
@@ -42,6 +46,10 @@ namespace kitchen_simulation
 
         if (pthread_mutex_init(&tools_lock, NULL) != 0) {
           util::exitWithErrorMessage("Couldn't init tools lock.");
+        }
+
+        if (pthread_mutex_init(&out_lock, NULL) != 0) {
+          util::exitWithErrorMessage("Couldn't init log lock.");
         }
 
         if (pthread_mutex_init(&log_lock, NULL) != 0) {

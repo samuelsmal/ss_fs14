@@ -40,5 +40,11 @@ int main(int argc, const char* argv[]) {
     }
   }
 
+  cout << "\nThe simulation has finished!"
+       << "\nNumber of dishes cooked:"
+       << "\n\t First type: " << arguments.number_of_first_type_meals_cooked
+       << "\n\t Second type: " << arguments.number_of_second_type_meals_cooked
+       << endl;
+
   return 0;
 }

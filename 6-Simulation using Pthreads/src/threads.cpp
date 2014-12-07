@@ -30,12 +30,12 @@ namespace kitchen_simulation
 
       while (arguments->is_simulation_running) {
         pthread_mutex_lock(&(arguments->tools_lock));
-        if (arguments->number_of_pans_available > 0
-          && arguments->number_of_spoons_available > 0) {
-          cooking = true;
-          --(arguments->number_of_spoons_available);
-          --(arguments->number_of_pans_available);
-        }
+          if (arguments->number_of_pans_available > 0
+            && arguments->number_of_spoons_available > 0) {
+            cooking = true;
+            --(arguments->number_of_spoons_available);
+            --(arguments->number_of_pans_available);
+          }
         pthread_mutex_unlock(&(arguments->tools_lock));
 
         if (cooking) {
@@ -43,27 +43,31 @@ namespace kitchen_simulation
           nanosleep(&ts, NULL); // cooking
 
           pthread_mutex_lock(&(arguments->tools_lock));
-          cooking = false;
-          ++(arguments->number_of_pans_available);
-          ++(arguments->number_of_spoons_available);
-
-          pthread_mutex_lock(&(arguments->log_lock));
-          std::cout << "A cook of the first type has finished cooking!" << std::endl;
-          pthread_mutex_unlock(&(arguments->log_lock));
-
+            cooking = false;
+            ++(arguments->number_of_pans_available);
+            ++(arguments->number_of_spoons_available);
           pthread_mutex_unlock(&(arguments->tools_lock));
-        } else {
+
+          pthread_mutex_lock(&(arguments->out_lock));
+            std::cout << "A cook of the first type has finished cooking!" << std::endl;
+          pthread_mutex_unlock(&(arguments->out_lock));
+
           pthread_mutex_lock(&(arguments->log_lock));
-          std::cout << "A cook of the first type couldn't cook, tools not available!" << std::endl;
+            ++(arguments->number_of_first_type_meals_cooked);
           pthread_mutex_unlock(&(arguments->log_lock));
+
+        } else {
+          pthread_mutex_lock(&(arguments->out_lock));
+            std::cout << "A cook of the first type couldn't cook, tools not available!" << std::endl;
+          pthread_mutex_unlock(&(arguments->out_lock));
         }
 
         auto ts = arguments->nextDelay();
         nanosleep(&ts, NULL); // resting
 
-        pthread_mutex_lock(&(arguments->log_lock));
-        std::cout << "A cook of the first type is done with waiting!" << std::endl;
-        pthread_mutex_unlock(&(arguments->log_lock));
+        pthread_mutex_lock(&(arguments->out_lock));
+          std::cout << "A cook of the first type is done with waiting!" << std::endl;
+        pthread_mutex_unlock(&(arguments->out_lock));
       }
 
       return static_cast<void*>(0);
@@ -76,14 +80,14 @@ namespace kitchen_simulation
 
       while (arguments->is_simulation_running) {
         pthread_mutex_lock(&(arguments->tools_lock));
-        if (arguments->number_of_pans_available > 0
-          && arguments->number_of_spoons_available > 0
-          && arguments->number_of_lids_available > 0) {
-          cooking = true;
-          --(arguments->number_of_spoons_available);
-          --(arguments->number_of_pans_available);
-          --(arguments->number_of_lids_available);
-        }
+          if (arguments->number_of_pans_available > 0
+            && arguments->number_of_spoons_available > 0
+            && arguments->number_of_lids_available > 0) {
+            cooking = true;
+            --(arguments->number_of_spoons_available);
+            --(arguments->number_of_pans_available);
+            --(arguments->number_of_lids_available);
+          }
         pthread_mutex_unlock(&(arguments->tools_lock));
 
         if (cooking) {
@@ -91,28 +95,32 @@ namespace kitchen_simulation
           nanosleep(&ts, NULL); // cooking
 
           pthread_mutex_lock(&(arguments->tools_lock));
-          cooking = false;
-          ++(arguments->number_of_pans_available);
-          ++(arguments->number_of_spoons_available);
-          ++(arguments->number_of_lids_available);
-
-          pthread_mutex_lock(&(arguments->log_lock));
-          std::cout << "A cook of the second type has finished cooking!" << std::endl;
-          pthread_mutex_unlock(&(arguments->log_lock));
-
+            cooking = false;
+            ++(arguments->number_of_pans_available);
+            ++(arguments->number_of_spoons_available);
+            ++(arguments->number_of_lids_available);
           pthread_mutex_unlock(&(arguments->tools_lock));
-        } else {
+
+          pthread_mutex_lock(&(arguments->out_lock));
+            std::cout << "A cook of the second type has finished cooking!" << std::endl;
+          pthread_mutex_unlock(&(arguments->out_lock));
+
           pthread_mutex_lock(&(arguments->log_lock));
-          std::cout << "A cook of the second type couldn't cook, tools not available!" << std::endl;
+            ++(arguments->number_of_second_type_meals_cooked);
           pthread_mutex_unlock(&(arguments->log_lock));
+
+        } else {
+          pthread_mutex_lock(&(arguments->out_lock));
+            std::cout << "A cook of the second type couldn't cook, tools not available!" << std::endl;
+          pthread_mutex_unlock(&(arguments->out_lock));
         }
 
         auto ts = arguments->nextDelay();
         nanosleep(&ts, NULL); // resting
 
-        pthread_mutex_lock(&(arguments->log_lock));
-        std::cout << "A cook of the second type is done with waiting!" << std::endl;
-        pthread_mutex_unlock(&(arguments->log_lock));
+        pthread_mutex_lock(&(arguments->out_lock));
+          std::cout << "A cook of the second type is done with waiting!" << std::endl;
+        pthread_mutex_unlock(&(arguments->out_lock));
       }
 
       return static_cast<void*>(0);
