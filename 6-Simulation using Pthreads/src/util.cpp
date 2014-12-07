@@ -24,8 +24,20 @@ namespace kitchen_simulation
   namespace util
   {
     [[ noreturn ]] void exitWithUsagePrint() {
-        std::cout << "Usage: kitchen_simulation <number of cooks1>, <number of cooks2>, <sleeping time min (nanoseconds)>, <sleeping time max (nanoseconds)>, <number of spoons>, <number of pans>, <number of lids>\n"
-          << "\nPress \"q\" to stop the simulation";
+        std::cout << "Usage:\n\tkitchen_simulation "
+                  << "<number of cooks of first type> "
+                  << "<number of cooks of second type> "
+                  << "<sleeping time min (nanoseconds)> "
+                  << "<sleeping time max (nanoseconds)> "
+                  << "<number of spoons> "
+                  << "<number of pans> "
+                  << "<number of lids>\n"
+                  << "\nPress \"q + ⏎\" to stop the simulation."
+                  << std::endl;
+
+        std::cout << "\nPlease note that all the numbers are positive. "
+                  << "Entering a negative value will result in weird and unwanted behaviour."
+                  << std::endl;
         std::exit(EXIT_FAILURE);
     }
 
