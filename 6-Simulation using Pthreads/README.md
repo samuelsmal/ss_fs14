@@ -12,6 +12,7 @@
     $ make         # will compile and link the sources
 
 In order to compile the program you need `clang++` and a `C++11` library.
+If you want to use `g++` instead of `clang++` you have to change the `CXX` variable in the makefile.
 
 ## Running:
 

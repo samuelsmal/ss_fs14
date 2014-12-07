@@ -18,7 +18,7 @@ CFLAGS     = -std=c++11 \
              -Os -pthread
 
 
-LINKER     = clang++ -o
+LINKER     = $(CXX) -o
 LFLAGS     = -pthread
 
 SRCDIR     = src
