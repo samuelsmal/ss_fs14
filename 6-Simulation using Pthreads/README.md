@@ -18,7 +18,7 @@ In order to compile the program you need `clang++` and a `C++11` library.
     $ make run
 
 Will run the proramm with following arguments:
-<number of cooks1>, <number of cooks2>, <sleeping time min (nanoseconds)>, <sleeping time max (nanoseconds)>, <number of spoons>, <number of pans>, <number of lids> = 10, 12, 100, 1000, 5, 3, 20
+<number of cooks of first type> <number of cooks of second type> <sleeping time min (nanoseconds)> <sleeping time max (nanoseconds)> <number of spoons> <number of pans> <number of lids> = 10 12 100 1000 5 3 20
 
 ## Cleaning:
 
@@ -32,4 +32,12 @@ Will in addition to `make clean` will remove the binary.
 
 ## Program overview
 
-Follow the trail from `main.cpp`.
+Follow the trail from `main.cpp`...
+
+### Deadlocks
+
+We use three mutexes: Two for the logging (one for the live feedback, one for the end result), one for the tools.
+They are never in a nested locked status, thus a deadlock cannot result.
+
+After the quit message (`q + ⏎`) the simulation will shut down gracefully,
+meaning that the last meals are cooked, and the cooks take their rest.
