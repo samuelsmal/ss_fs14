@@ -129,18 +129,17 @@ namespace kitchen_simulation
     void* handleInput(void* arg) {
       ThreadArguments* arguments = {static_cast<ThreadArguments*>(arg)};
 
-      // TODO: This has to be adapted.
       char user_input;
-      while(true) {
-    	  std::cout << "Press 'q' then 'Enter' any time to stop the simulation" << std::endl;
+      while(arguments->is_simulation_running) {
+        // This is here for the user's convenience. Not an error.
+    	  std::cout << "Press 'q', then press '⏎' any time to stop the simulation" << std::endl;
       	  std::cin >> user_input;
       	  if(user_input == 'q') {
       		  arguments->is_simulation_running = false;
-      		  return static_cast<void*>(0);
       	  }
       }
 
-      return 0;
+      return static_cast<void*>(0);
     }
 
     auto createThreads(ThreadArguments& threadArguments, const Settings& settings) -> std::vector<pthread_t> {
