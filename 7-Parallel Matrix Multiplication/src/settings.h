@@ -29,6 +29,9 @@ namespace matr_mult {
     size_t execution_mode;
     size_t number_of_threads;
 
+    std::string results_file_name {"../sample_files/result.txt"};
+    std::string expected_results_file_name {"../sample_files/output.txt"};
+    bool testResult {true};
 
     // Expects the following argv structure:
     //    0: name of execution file
@@ -40,7 +43,8 @@ namespace matr_mult {
         lhs_file_name(util::parseSetting<std::string>(argv, 1)),
         rhs_file_name(util::parseSetting<std::string>(argv, 2)),
         execution_mode(util::parseSetting<uint>(argv, 3)),
-        number_of_threads(util::parseSetting<size_t>(argv, 4)) {
+        number_of_threads(util::parseSetting<size_t>(argv, 4)),
+        expected_results_file_name(util::parseSetting<std::string>(argv, 5)) {
           if (execution_mode > 3) {
             util::exitWithErrorMessage("No such execution mode known!");
           }

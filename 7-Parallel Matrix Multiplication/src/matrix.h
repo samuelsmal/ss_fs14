@@ -18,6 +18,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <iomanip>
+#include <cstdlib>
 
 #include "util.h"
 
@@ -33,6 +34,10 @@ namespace matr_mult
 
       inline size_t coordsToPos(size_t r, size_t c) const {
         return r * cols + c;
+      }
+
+      inline size_t totalNumberOfElements() const {
+        return rows * cols;
       }
 
     public:
@@ -121,11 +126,7 @@ namespace matr_mult
         auto itr = elements.begin();
         std::advance(itr, coordsToPos(row_number, 0));
 
-        std::copy_n(
-          itr,
-          cols,
-          std::back_inserter(row)
-        );
+        std::copy_n(itr, cols, std::back_inserter(row));
 
         return row;
       }
@@ -152,11 +153,25 @@ namespace matr_mult
 
         Matrix<T> result(rows, cols);
 
-        for(size_t i = 0; i < rows * cols; ++i) {
+        for(size_t i = 0; i < totalNumberOfElements(); ++i) {
           result.setElement(getElement(i) - rhs.getElement(i), i);
         }
 
         return result;
+      }
+
+      bool equals(const Matrix<T>& rhs, T margin) const {
+        if (cols != rhs.getNumberOfColumns() || rows != rhs.getNumberOfRows()) {
+          return false;
+        }
+
+        for (size_t i = 0; i < totalNumberOfElements(); ++i) {
+          if (std::abs(getElement(i) - rhs.getElement(i)) > margin) {
+            return false;
+          }
+        }
+
+        return true;
       }
     };
 
