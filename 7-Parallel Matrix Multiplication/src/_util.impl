@@ -1,0 +1,67 @@
+//
+//  matr_mult
+//
+//  util.cpp
+//
+//  Systems Software, FS14, UZH Zurich
+//
+//  Exercise 7 - Parallel Matrix Multiplication
+//
+
+#include <sys/stat.h>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+#include <sstream> // To parse the arguments
+
+#include "util.h"
+#include "settings.h"
+
+namespace matr_mult
+{
+  namespace util
+  {
+    [[ noreturn ]] void exitWithUsagePrint() {
+        std::cout << "Usage:\n\tmatr_mult "
+                  << "<file name of lhs matrix> "
+                  << "<file name of rhs matrix> "
+                  << "<execution mode> "
+                  << "<number of threads>\n"
+                  << "\n\n\n"
+                  << "execution mode: 0 serial\n"
+                  << "                1 PThreads\n"
+                  << "                2 OpenMP"
+                  << std::endl;
+
+        std::cout << "\nPlease note that all the numbers are positive. "
+                  << "Entering a negative value will result in weird and unwanted behaviour."
+                  << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+
+    [[ noreturn ]] void exitWithErrorMessage(const std::string message) {
+      std::cerr << message << std::endl;
+      std::exit(EXIT_FAILURE);
+    }
+
+    template <typename T>
+    T parseSetting(const char* argv[], size_t pos) {
+      std::istringstream iss;
+
+      T setting;
+
+      iss.str(argv[pos]);
+      if (!(iss >> setting)) {
+        exitWithUsagePrint();
+      }
+
+      return setting;
+    }
+
+    auto fileExists(const std::string& filePath) -> bool {
+      struct stat buffer;
+      return (stat (filePath.c_str(), &buffer) == 0);
+    }
+  }
+}
