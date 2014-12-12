@@ -55,4 +55,4 @@ remove: clean
 
 .PHONEY: run
 run:
-	./bin/$(TARGET) left_matrix.txt right_matrix.txt 0 2
+	./bin/$(TARGET) sample_data/left_matrix.txt sample_data/right_matrix.txt 0 2
