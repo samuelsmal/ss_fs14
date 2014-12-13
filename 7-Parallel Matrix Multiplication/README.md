@@ -18,8 +18,7 @@ If you want to use `g++` instead of `clang++` you have to change the `CXX` varia
 
     $ make run
 
-Will run the proramm with following arguments:
-<number of cooks of first type> <number of cooks of second type> <sleeping time min (nanoseconds)> <sleeping time max (nanoseconds)> <number of spoons> <number of pans> <number of lids> = 10 12 100 1000 5 3 20
+Will run it with the provided sample data.
 
 ## Cleaning:
 
@@ -31,10 +30,15 @@ Will remove the objective-files and the temporary files.
 
 Will in addition to `make clean` will remove the binary.
 
-## Program overview
+## Program details
 
-Follow the trail from `main.cpp`...
+Since the openMP and the serial version require different code than the pthread
+version, we made several implementations. Both are roughly the same, the ideas
+are all functions calls are the same. Pthread's version needs some additional
+casting and memory loading though, but this is due to pthread's structure.
+OpenMP might do something like this under the hood.
 
 ### Deadlocks
 
-No usage of mutexes.
+No usage of mutexes. Since access is given through pointers and values are
+either writen once or never.
