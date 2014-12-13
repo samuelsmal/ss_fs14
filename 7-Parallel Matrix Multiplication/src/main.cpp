@@ -14,10 +14,13 @@
 #include <iterator>
 #include <utility>
 
+#include <omp.h>
+
 
 #include "util.h"
 #include "settings.h"
 #include "matrix.h"
+#include "pthread_stuff.h"
 
 using namespace std;
 using namespace matr_mult;
@@ -39,7 +42,13 @@ int main(int argc, const char* argv[]) {
   Matrix<double> lhs(settings.lhs_file_name);
   Matrix<double> rhs(settings.rhs_file_name);
 
-  Matrix<double> result = lhs * rhs;
+  double time_start = omp_get_wtime();
+  Matrix<double> result =
+    (settings.execution_mode == 1
+      ? matrixProductPthreadStyle(lhs, rhs, settings.number_of_threads)
+      : matrixProduct(lhs, rhs, settings.execution_mode, settings.number_of_threads));
+  double time_end = omp_get_wtime();
+  std::cout << "It took " << (time_end - time_start) << " seconds" << std::endl;
 
   if (settings.testResult) {
     // Testing result
@@ -82,7 +91,6 @@ int main(int argc, const char* argv[]) {
 
     cout << "max " << max << " min " << min << endl;
   }
-
 
   return 0;
 }

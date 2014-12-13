@@ -20,6 +20,8 @@
 #include <iomanip>
 #include <cstdlib>
 
+#include <omp.h>
+
 #include "util.h"
 
 namespace matr_mult
@@ -34,10 +36,6 @@ namespace matr_mult
 
       inline size_t coordsToPos(size_t r, size_t c) const {
         return r * cols + c;
-      }
-
-      inline size_t totalNumberOfElements() const {
-        return rows * cols;
       }
 
     public:
@@ -100,6 +98,10 @@ namespace matr_mult
 
       size_t getNumberOfColumns() const {
         return cols;
+      }
+
+      size_t totalNumberOfElements() const {
+        return rows * cols;
       }
 
       T getElement(size_t pos) const {
@@ -177,6 +179,11 @@ namespace matr_mult
 
     template<typename T>
     Matrix<T> matrixProduct(const Matrix<T>& lhs, const Matrix<T>& rhs) {
+      return matrixProduct(lhs, rhs, 0, 0);
+    }
+
+    template<typename T>
+    Matrix<T> matrixProduct(const Matrix<T>& lhs, const Matrix<T>& rhs, size_t execution_mode, size_t number_of_threads) {
       size_t cols = rhs.getNumberOfColumns();
       size_t rows = lhs.getNumberOfRows();
 
@@ -190,6 +197,9 @@ namespace matr_mult
       T dummy = lhs.getElement(0);
       dummy -= dummy;
 
+      bool openmp_enabled = execution_mode == 2;
+
+      #pragma omp parallel for num_threads(number_of_threads) if(openmp_enabled) schedule(guided)
       for (size_t r = 0; r < rows; ++r) {
         for (size_t c = 0; c < cols; ++c) {
 

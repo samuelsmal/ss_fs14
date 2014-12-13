@@ -8,15 +8,15 @@
 # Name of target file
 TARGET     = matr_mult
 
-CXX        = clang++
+CXX        = g++
 CFLAGS     = -std=c++11 -Wall -Wextra -Wpointer-arith -Wcast-qual \
              -Wno-missing-braces -Wempty-body -Wno-error=uninitialized \
-             -Wno-error=deprecated-declarations -Wno-c++98-compat \
+             -Wno-error=deprecated-declarations\
              -pedantic-errors -pedantic \
              -Os -fopenmp -pthread
 
 
-LINKER     = clang++ -o
+LINKER     = g++ -o
 LFLAGS     = -fopenmp -pthread
 
 SRCDIR     = src
@@ -56,3 +56,5 @@ remove: clean
 .PHONEY: run
 run:
 	./bin/$(TARGET) sample_data/left_matrix.txt sample_data/right_matrix.txt 0 2 sample_data/output.txt
+	./bin/$(TARGET) sample_data/left_matrix.txt sample_data/right_matrix.txt 1 4 sample_data/output.txt
+	./bin/$(TARGET) sample_data/left_matrix.txt sample_data/right_matrix.txt 2 4 sample_data/output.txt

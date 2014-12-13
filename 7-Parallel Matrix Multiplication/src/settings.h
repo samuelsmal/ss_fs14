@@ -31,7 +31,7 @@ namespace matr_mult {
 
     std::string results_file_name {"../sample_files/result.txt"};
     std::string expected_results_file_name {"../sample_files/output.txt"};
-    bool testResult {true};
+    bool testResult {false};
 
     // Expects the following argv structure:
     //    0: name of execution file
