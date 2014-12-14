@@ -63,7 +63,7 @@ int main(int argc, const char* argv[]) {
          << "Tests"
          << endl;
 
-    result.writeToFile(settings.results_file_name);
+    result.writeToFile("sample_data/result.txt");
     Matrix<double> expected(settings.expected_results_file_name);
 
     cout << "sizes: " << expected.getElements().size() << " " << result.getElements().size() << endl;
@@ -71,7 +71,7 @@ int main(int argc, const char* argv[]) {
     Matrix<double> subtracted = result - expected;
     Matrix<double> subtracted2 = expected - result;
 
-    subtracted.writeToFile("subtracted.txt");
+    subtracted.writeToFile("sample_data/subtracted.txt");
 
     double error_margin {0.001};
 

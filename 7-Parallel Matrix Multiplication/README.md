@@ -11,14 +11,16 @@
     $ make prepare # will create the bin and obj directories
     $ make         # will compile and link the sources
 
-In order to compile the program you need `clang++` and a `C++11` library.
-If you want to use `g++` instead of `clang++` you have to change the `CXX` variable in the makefile.
+In order to compile the program you need `gg++`, a `C++11` library and `openMP`
+and `pthreads` working on your machine. Bear in mind that `clang++` as of now
+doesn't support `openMP` out of the box.
 
 ## Running:
 
     $ make run
 
-Will run it with the provided sample data.
+Will run it with the provided sample data (located in `./sample_data`). The
+program will save the result there.
 
 ## Cleaning:
 
@@ -40,5 +42,5 @@ OpenMP might do something like this under the hood.
 
 ### Deadlocks
 
-No usage of mutexes. Since access is given through pointers and values are
-either writen once or never.
+No usage of mutexes. Values are either writen once or never, data is immutable.
+

@@ -30,6 +30,8 @@ namespace matr_mult
     }
 }
 
-#include "_util.impl"
+#include "_util.impl" // Otherwise the templates won't work.
+                      // I know - some might say it's bad style. But I like it.
+                      // Sam
 
 #endif

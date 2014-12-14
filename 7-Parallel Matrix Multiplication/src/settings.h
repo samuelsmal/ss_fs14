@@ -1,7 +1,7 @@
 //
 //  matr_mult
 //
-//  util.cpp
+//  settings.cpp
 //
 //  Systems Software, FS14, UZH Zurich
 //
@@ -29,9 +29,8 @@ namespace matr_mult {
     size_t execution_mode;
     size_t number_of_threads;
 
-    std::string results_file_name {"../sample_files/result.txt"};
-    std::string expected_results_file_name {"../sample_files/output.txt"};
-    bool testResult {false};
+    std::string expected_results_file_name {"./sample_files/output.txt"};
+    bool testResult {true};
 
     // Expects the following argv structure:
     //    0: name of execution file

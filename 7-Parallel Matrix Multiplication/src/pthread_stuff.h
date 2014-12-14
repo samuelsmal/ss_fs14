@@ -1,7 +1,7 @@
 //
 //  matr_mult
 //
-//  matrix.h
+//  pthread_stuff.h
 //
 //  Systems Software, FS14, UZH Zurich
 //
